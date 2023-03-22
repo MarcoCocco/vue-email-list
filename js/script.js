@@ -18,8 +18,10 @@ createApp({
         },
 
         createEmailList() {
-            for (let i = 0; i < 10; i++) {
-                this.createEmail();
+            if (this.emailList.length < 10) {
+                for (let i = 0; i < 10; i++) {
+                    this.createEmail();
+                }
             }
         },
     }
