@@ -4,25 +4,29 @@ const { createApp } = Vue
 createApp({
     data() {
         return {
-            emailList: [],
-            singleEmail: null,
+            emailList: []
         }
     },
 
     methods: {
-        createEmail() {
-            axios.get('https://flynn.boolean.careers/exercises/api/random/mail').then((res) => {
-                this.singleEmail = res.data.response;
-                this.emailList.push(this.singleEmail);
-            });
-        },
-
         createEmailList() {
-            if (this.emailList.length < 10) {
-                for (let i = 0; i < 10; i++) {
-                    this.createEmail();
-                }
-            }
+            //ho usato il metodo .all per fare 10 chiamate contemporanee
+            //mappando le risposte per recuperare solo gli indirizzi email
+            //che verranno poi inseriti contemporaneamente nell'emailList (Bonus)
+            axios.all([
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                    axios.get('https://flynn.boolean.careers/exercises/api/random/mail'),
+                ]).then((res) => {
+                    this.emailList = res.map((res) => res.data.response);
+                });
         },
     }
 
